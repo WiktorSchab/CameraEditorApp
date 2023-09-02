@@ -6,6 +6,10 @@ import cv2 as cv
 import pyvirtualcam
 from PIL import Image, ImageTk
 
+from camera_class import CameraClass
+
+# Setting instance with tab 0 as active one
+camera_instance = CameraClass(0)
 
 def camera_update():
     ret, frame = camera.read()
@@ -22,9 +26,12 @@ def camera_update():
     # Setting refreshing ratio in ms
     root.after(10, camera_update)
 
+
 def current_camera(*args):
-    t = str(main_camera_tab.index(main_camera_tab.select()))
-    print(t)
+    tab_num = str(main_camera_tab.index(main_camera_tab.select()))
+    camera_instance.active = tab_num
+    print(camera_instance.active)
+
 
 root = tk.Tk()
 
@@ -59,12 +66,10 @@ modified_camera.grid(row=0, column=0)
 original_camera = tk.Label(main_camera_tab)
 original_camera.grid(row=0, column=0)
 
-
 # Tabs with camera
 main_camera_tab.add(modified_camera, text='Modified camera')
 main_camera_tab.add(original_camera, text='Original camera')
 main_camera_tab.bind('<<NotebookTabChanged>>', current_camera)
-
 
 main_frame.pack(fill='x')
 
