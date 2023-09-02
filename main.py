@@ -1,5 +1,6 @@
 import os
 import tkinter as tk
+from tkinter import ttk
 
 import cv2 as cv
 import pyvirtualcam
@@ -15,12 +16,15 @@ def camera_update():
         frame = ImageTk.PhotoImage(image=frame)
 
         # Setting frame as image
-        center.imgtk = frame
-        center.configure(image=frame)
+        original_camera.imgtk = frame
+        original_camera.configure(image=frame)
 
     # Setting refreshing ratio in ms
     root.after(10, camera_update)
 
+def current_camera(*args):
+    t = str(main_camera_tab.index(main_camera_tab.select()))
+    print(t)
 
 root = tk.Tk()
 
@@ -44,11 +48,25 @@ left_side = tk.Button(main_frame, text='1')
 left_side.grid(row=0, column=0)
 
 # Center of window
-center = tk.Label(main_frame)
-center.grid(row=0, column=1)
+main_camera_tab = ttk.Notebook(main_frame)
+main_camera_tab.grid(row=0, column=1)
+
+# Modified image from camera | Tab 0
+modified_camera = tk.Label(main_camera_tab, text='In progress')
+modified_camera.grid(row=0, column=0)
+
+# Original image from camera | Tab 1
+original_camera = tk.Label(main_camera_tab)
+original_camera.grid(row=0, column=0)
+
+
+# Tabs with camera
+main_camera_tab.add(modified_camera, text='Modified camera')
+main_camera_tab.add(original_camera, text='Original camera')
+main_camera_tab.bind('<<NotebookTabChanged>>', current_camera)
+
 
 main_frame.pack(fill='x')
-
 
 camera_update()
 
