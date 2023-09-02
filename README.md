@@ -1,2 +1,2 @@
 # CameraEditorApp
-Simple GUI app to add filters to camera in real time
+Simple GUI app to modify to camera image in real time
