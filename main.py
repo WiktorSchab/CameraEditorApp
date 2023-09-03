@@ -1,6 +1,6 @@
 import os
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, PhotoImage
 
 import cv2 as cv
 import pyvirtualcam
@@ -25,10 +25,15 @@ root.geometry('900x600')
 root.title('Camera Editor App')
 root.resizable(False, False)
 
+
 camera = cv.VideoCapture(0)
 
 # Content will all
 main_frame = tk.Frame(root)
+
+bg = PhotoImage(file=r'graphic\bg.png')
+bg_label = tk.Label(main_frame, image=bg)
+bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 # Amount of columns
 main_frame.columnconfigure(0, weight=1)
@@ -56,7 +61,7 @@ main_camera_tab.add(modified_camera, text='Modified camera')
 main_camera_tab.add(original_camera, text='Original camera')
 main_camera_tab.bind('<<NotebookTabChanged>>', current_camera)
 
-main_frame.pack(fill='x')
+main_frame.pack(fill='both', expand=True)
 
 # List of labels where to display cameras
 label_list = [modified_camera, original_camera]
