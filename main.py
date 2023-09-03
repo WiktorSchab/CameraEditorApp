@@ -1,9 +1,9 @@
 import os
 import tkinter as tk
 from tkinter import ttk, PhotoImage
+import threading
 
 import cv2 as cv
-import pyvirtualcam
 
 from camera_class import CameraClass
 from camera_properties import camera_update
@@ -17,6 +17,11 @@ def current_camera(*args):
     tab_num = int(main_camera_tab.index(main_camera_tab.select()))
     camera_instance.active = tab_num
 
+def start_camera_thread():
+    # Tworzenie wątku do obsługi kamery i interfejsu
+    camera_thread = threading.Thread(target=camera_update, args=(camera, label_list, root, camera_instance))
+    camera_thread.daemon = True
+    camera_thread.start()
 
 root = tk.Tk()
 
@@ -65,8 +70,9 @@ main_frame.pack(fill='both', expand=True)
 
 # List of labels where to display cameras
 label_list = [modified_camera, original_camera]
-# Calling function to updating camera image
-camera_update(camera, label_list, root, camera_instance)
+
+# Starting camera thread
+root.after(1, start_camera_thread)
 
 root.mainloop()
 # After closing window
