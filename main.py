@@ -14,9 +14,8 @@ camera_instance = CameraClass(0)
 
 
 def current_camera(*args):
-    tab_num = str(main_camera_tab.index(main_camera_tab.select()))
+    tab_num = int(main_camera_tab.index(main_camera_tab.select()))
     camera_instance.active = tab_num
-    print(camera_instance.active)
 
 
 root = tk.Tk()
@@ -59,8 +58,10 @@ main_camera_tab.bind('<<NotebookTabChanged>>', current_camera)
 
 main_frame.pack(fill='x')
 
+# List of labels where to display cameras
+label_list = [modified_camera, original_camera]
 # Calling function to updating camera image
-camera_update(camera, original_camera, root)
+camera_update(camera, label_list, root, camera_instance)
 
 root.mainloop()
 # After closing window
