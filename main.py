@@ -4,27 +4,13 @@ from tkinter import ttk
 
 import cv2 as cv
 import pyvirtualcam
-from PIL import Image, ImageTk
 
 from camera_class import CameraClass
+from camera_properties import camera_update
+
 
 # Setting instance with tab 0 as active one
 camera_instance = CameraClass(0)
-
-def camera_update():
-    ret, frame = camera.read()
-
-    if ret:
-        frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-        frame = Image.fromarray(frame)
-        frame = ImageTk.PhotoImage(image=frame)
-
-        # Setting frame as image
-        original_camera.imgtk = frame
-        original_camera.configure(image=frame)
-
-    # Setting refreshing ratio in ms
-    root.after(10, camera_update)
 
 
 def current_camera(*args):
@@ -73,7 +59,8 @@ main_camera_tab.bind('<<NotebookTabChanged>>', current_camera)
 
 main_frame.pack(fill='x')
 
-camera_update()
+# Calling function to updating camera image
+camera_update(camera, original_camera, root)
 
 root.mainloop()
 # After closing window
