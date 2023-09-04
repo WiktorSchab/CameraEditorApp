@@ -13,15 +13,18 @@ from camera_properties import camera_update
 camera_instance = CameraClass(0)
 
 
+# Changing current tab number
 def current_camera(*args):
     tab_num = int(main_camera_tab.index(main_camera_tab.select()))
     camera_instance.active = tab_num
 
+
+# Tread for updating camera image.
 def start_camera_thread():
-    # Tworzenie wątku do obsługi kamery i interfejsu
-    camera_thread = threading.Thread(target=camera_update, args=(camera, label_list, root, camera_instance))
+    camera_thread = threading.Thread(target=camera_update, args=(camera, label_list, camera_instance))
     camera_thread.daemon = True
     camera_thread.start()
+
 
 root = tk.Tk()
 
