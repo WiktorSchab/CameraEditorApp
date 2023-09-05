@@ -14,7 +14,7 @@ camera_instance = CameraClass(0)
 
 
 # Changing current tab number
-def current_camera(*args):
+def current_camera(event):
     tab_num = int(main_camera_tab.index(main_camera_tab.select()))
     camera_instance.active = tab_num
 
@@ -24,6 +24,15 @@ def start_camera_thread():
     camera_thread = threading.Thread(target=camera_update, args=(camera, label_list, camera_instance))
     camera_thread.daemon = True
     camera_thread.start()
+
+
+# Selecting filter
+def select_filter(event):
+    w = event.widget
+    index = int(w.curselection()[0])
+    value = w.get(index)
+
+    print(value,index)
 
 
 root = tk.Tk()
@@ -48,16 +57,27 @@ main_frame.columnconfigure(0, weight=1)
 main_frame.columnconfigure(1, weight=1)
 main_frame.columnconfigure(2, weight=1)
 
+main_frame.rowconfigure(0, weight=1)
+main_frame.rowconfigure(1, weight=1)
+main_frame.rowconfigure(2, weight=1)
+
 # Left side
-left_side = tk.Button(main_frame, text='1')
-left_side.grid(row=0, column=0)
+filter_list = ['Default', 'Gray', 'Laplacian', 'Blur']
+
+my_listbox = tk.Listbox(main_frame)
+my_listbox.grid(row=0,column=0)
+
+for item in filter_list:
+    my_listbox.insert('end', item)
+
+my_listbox.bind('<<ListboxSelect>>', select_filter)
 
 # Center of window
 main_camera_tab = ttk.Notebook(main_frame)
 main_camera_tab.grid(row=0, column=1)
 
 # Modified image from camera | Tab 0
-modified_camera = tk.Label(main_camera_tab, text='In progress')
+modified_camera = tk.Label(main_camera_tab)
 modified_camera.grid(row=0, column=0)
 
 # Original image from camera | Tab 1
