@@ -16,7 +16,7 @@ camera_instance = CameraClass(0)
 # Changing current tab number
 def current_camera(event):
     tab_num = int(main_camera_tab.index(main_camera_tab.select()))
-    camera_instance.active = tab_num
+    camera_instance.active_window_number = tab_num
 
 
 # Tread for updating camera image.
@@ -32,6 +32,8 @@ def select_filter(event):
     index = int(w.curselection()[0])
     value = w.get(index)
 
+    # Changing active filter
+    camera_instance.active_filter = index
     print(value,index)
 
 

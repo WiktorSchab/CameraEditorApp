@@ -22,12 +22,29 @@ def camera_update(camera, label_list, camera_instance):
         while True:
             ret, frame = camera.read()  # Read a frame from the video
 
-            # Applying filter
-            laplacian = cv.Laplacian(frame, cv.CV_64F)
-            filter_frame = np.uint8(laplacian)
+
+
+            # List of filter function in instance with active filter number
+            list_filters = {
+                1: 'gray',
+                2: 'laplacian',
+                3: 'blur'
+            }
+
+            # Calling function to set filter by looking by active_filter number saved in instance
+            if camera_instance.active_filter:
+                filter_method_name = list_filters[camera_instance.active_filter]
+                if hasattr(camera_instance, filter_method_name):
+                    filter_method = getattr(camera_instance, filter_method_name)
+
+                    # Filtered frame
+                    filter_frame = filter_method(frame)
+            else:
+                filter_frame = frame
+
 
             # If active Tab is Tab nr 0
-            if camera_instance.active == 0:
+            if camera_instance.active_window_number == 0:
                 # frame is image that is displaying in tkinter
                 frame = filter_frame
 
@@ -37,7 +54,7 @@ def camera_update(camera, label_list, camera_instance):
             frame_display = ImageTk.PhotoImage(image=frame_display)
 
             # Setting frame as image
-            label = label_list[camera_instance.active]
+            label = label_list[camera_instance.active_window_number]
             label.imgtk = frame_display
             label.configure(image=frame_display)
 
