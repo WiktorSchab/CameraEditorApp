@@ -1,1 +1,2 @@
-__pycache__/
+# Ignoring all files with pyc beacuse only cache files will have that extension in project
+*.pyc
