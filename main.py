@@ -7,9 +7,22 @@ import cv2 as cv
 
 from camera_class import CameraClass
 from camera_properties import camera_update
+from settings_gui import filters_setting, app_setting
 
 # Setting instance with tab 0 as active one
 camera_instance = CameraClass(0)
+
+
+def hide_content(setting_number):
+    if setting_number == 1:
+        filters_setting(root, main_frame)
+    elif setting_number == 2:
+        app_setting(root, main_frame)
+
+
+def show_content():
+
+    main_frame.pack(fill='both', expand=True)
 
 
 # Changing current tab number
@@ -43,11 +56,17 @@ root.geometry('900x600')
 root.title('Camera Editor App')
 root.resizable(False, False)
 
-
+my_menu = tk.Menu(root)
+root.config(menu=my_menu)
 
 # Camera device
 camera = cv.VideoCapture(0)
 
+# Sub-menu settings
+settings = tk.Menu(my_menu)
+settings.add_command(label='Filter Settings', command=lambda: hide_content(1))
+settings.add_command(label='App Settings', command=lambda: hide_content(2))
+my_menu.add_cascade(label='Settings', menu=settings)
 
 # Content will all labels
 main_frame = tk.Frame(root)
@@ -98,6 +117,8 @@ main_camera_tab.bind('<<NotebookTabChanged>>', current_camera)
 
 
 main_frame.pack(fill='both', expand=True)
+
+
 
 # Starting camera thread
 root.after(1, start_camera_thread)
