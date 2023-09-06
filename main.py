@@ -8,7 +8,6 @@ import cv2 as cv
 from camera_class import CameraClass
 from camera_properties import camera_update
 
-
 # Setting instance with tab 0 as active one
 camera_instance = CameraClass(0)
 
@@ -34,7 +33,7 @@ def select_filter(event):
 
     # Changing active filter
     camera_instance.active_filter = index
-    print(value,index)
+    print(value, index)
 
 
 root = tk.Tk()
@@ -45,9 +44,12 @@ root.title('Camera Editor App')
 root.resizable(False, False)
 
 
+
+# Camera device
 camera = cv.VideoCapture(0)
 
-# Content will all
+
+# Content will all labels
 main_frame = tk.Frame(root)
 
 bg = PhotoImage(file=r'graphic\bg.png')
@@ -64,10 +66,10 @@ main_frame.rowconfigure(1, weight=1)
 main_frame.rowconfigure(2, weight=1)
 
 # Left side
-filter_list = ['Default', 'Gray', 'Laplacian', 'Blur']
+filter_list = ['Default', 'Gray', 'Laplacian', 'Blur', 'Bilateral']
 
 my_listbox = tk.Listbox(main_frame)
-my_listbox.grid(row=0,column=0)
+my_listbox.grid(row=0, column=0)
 
 for item in filter_list:
     my_listbox.insert('end', item)
@@ -86,15 +88,16 @@ modified_camera.grid(row=0, column=0)
 original_camera = tk.Label(main_camera_tab)
 original_camera.grid(row=0, column=0)
 
+# List of labels where to display cameras
+label_list = [modified_camera, original_camera]
+
 # Tabs with camera
 main_camera_tab.add(modified_camera, text='Modified camera')
 main_camera_tab.add(original_camera, text='Original camera')
 main_camera_tab.bind('<<NotebookTabChanged>>', current_camera)
 
-main_frame.pack(fill='both', expand=True)
 
-# List of labels where to display cameras
-label_list = [modified_camera, original_camera]
+main_frame.pack(fill='both', expand=True)
 
 # Starting camera thread
 root.after(1, start_camera_thread)

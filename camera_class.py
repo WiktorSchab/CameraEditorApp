@@ -1,11 +1,12 @@
 import numpy as np
 import cv2 as cv
 
+
 class CameraClass:
     def __init__(self, window_number):
         """ Init function of CameraClass
 
-        :param active: number of active tab
+        :param window_number: number of clicked tab
         """
 
         self.active_window_number = window_number
@@ -25,6 +26,11 @@ class CameraClass:
 
     @staticmethod
     def blur(frame):
-        ksize = (10,10)
+        ksize = (10, 10)
         blur = cv.blur(frame, ksize)
         return np.uint8(blur)
+
+    @staticmethod
+    def bilateral(frame):
+        Bilateral = cv.bilateralFilter(frame, 9, 75, 75)
+        return np.uint8(Bilateral)
