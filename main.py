@@ -15,13 +15,12 @@ camera_instance = CameraClass(0)
 
 def hide_content(setting_number):
     if setting_number == 1:
-        filters_setting(root, main_frame)
+        filters_setting(root, main_frame, camera_instance)
     elif setting_number == 2:
-        app_setting(root, main_frame)
+        app_setting(root, main_frame, camera_instance)
 
 
 def show_content():
-
     main_frame.pack(fill='both', expand=True)
 
 

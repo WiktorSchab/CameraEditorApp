@@ -8,10 +8,12 @@ class CameraClass:
 
         :param window_number: number of clicked tab
         """
-
         self.active_window_number = window_number
         # Default filter is default (0)
         self.active_filter = 0
+
+        # Attribute that informs if settings are already displayed
+        self.settings_displayed = 0
 
     # Filter functions
     @staticmethod
