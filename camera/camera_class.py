@@ -29,6 +29,27 @@ class CameraClass:
 
         return data_to_return
 
+    @staticmethod
+    def update_settings(settings_value_dict):
+        # Opening setting file
+        with open('settings/settings.json', 'r') as file:
+            data = json.load(file)
+
+        # Updating data
+        for key, value in settings_value_dict.items():
+            # Calculating original ratio between numbers in setting array
+            ratio = []
+            for i in data[key]:
+                ratio.append(i/data[key][0])
+
+            # Multiplying ratio elements by value
+            value_array = [int(i*int(value)) for i in ratio]
+            data[key] = value_array
+
+        # Saving new data
+        with open('settings/settings.json', 'w') as file:
+            json.dump(data, file)
+
     # Filter functions
     @staticmethod
     def gray(frame):
