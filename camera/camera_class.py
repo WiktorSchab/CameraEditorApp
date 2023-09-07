@@ -9,6 +9,7 @@ class CameraClass:
         :param window_number: number of clicked tab
         """
         self.active_window_number = window_number
+        
         # Default filter is default (0)
         self.active_filter = 0
 

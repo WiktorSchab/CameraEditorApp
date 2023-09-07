@@ -60,6 +60,7 @@ def camera_update(camera, label_list, camera_instance):
 
             # Resize the frame
             frame_resized = cv.resize(filter_frame, (frame_width, frame_height))
+            
 
             # Send the frame to the virtual camera
             cam.send(frame_resized)

@@ -1,13 +1,12 @@
-import os
 import tkinter as tk
 from tkinter import ttk, PhotoImage
 import threading
 
 import cv2 as cv
 
-from camera_class import CameraClass
-from camera_properties import camera_update
-from settings_gui import filters_setting, app_setting
+from camera.camera_class import CameraClass
+from camera.camera_properties import camera_update
+from settings.settings_gui import filters_setting, app_setting
 
 # Setting instance with tab 0 as active one
 camera_instance = CameraClass(0)
