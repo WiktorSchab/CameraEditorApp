@@ -58,10 +58,10 @@ def camera_update(camera, label_list, camera_instance):
             if not ret:
                 break
 
-            # Resize the frame
+            # Resizing and restoring original color to frame
             frame_resized = cv.resize(filter_frame, (frame_width, frame_height))
-            
+            frame_result = cv.cvtColor(frame_resized, cv.COLOR_BGR2RGB)
 
             # Send the frame to the virtual camera
-            cam.send(frame_resized)
+            cam.send(frame_result)
             cam.sleep_until_next_frame()
