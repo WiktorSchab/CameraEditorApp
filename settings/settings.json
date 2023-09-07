@@ -1,0 +1,4 @@
+{
+  "blur_ksize": [10,10],
+  "bilateral_filter": [9, 75, 75]
+}
