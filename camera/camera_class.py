@@ -43,7 +43,7 @@ class CameraClass:
                 ratio.append(i/data[key][0])
 
             # Multiplying ratio elements by value
-            value_array = [int(i*int(value)) for i in ratio]
+            value_array = [int(i*float(value)) for i in ratio]
             data[key] = value_array
 
         # Saving new data
@@ -75,7 +75,9 @@ class CameraClass:
 
     @staticmethod
     def brighness(frame):
-        setting = CameraClass.check_settings('brighness')[0]
-        brighness_frame = cv.convertScaleAbs(frame, alpha=setting[0], beta=0)
+        setting = CameraClass.check_settings('brighness')[0][0]
+        # Calculating alpha multiplayer
+        setting = 1 + setting/100
+        brighness_frame = cv.convertScaleAbs(frame, alpha=setting, beta=0)
         return np.uint8(brighness_frame)
 
