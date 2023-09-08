@@ -38,9 +38,24 @@ def exit_settings_funct(setting_frame, camera_instance, main_frame, settings_to_
             return
 
 
+# Function to create slider with label with tex
+def slider_constructor(frame, instance, setting_to_change, setting_dict, text):
+    blur_slider_text = tk.Label(frame, text=f" {text}: 10")
+    blur_slider = tk.Scale(frame,
+                           from_=1, to=20, orient="horizontal",
+                           command=lambda value: update_value(value, blur_slider_text, setting_to_change, setting_dict)
+                           )
+    # Setting value of slider by using function that check settings.json file
+    blur_slider.set(instance.check_settings(setting_to_change)[0][0])
+    return blur_slider, blur_slider_text
+
+
 def filters_setting(root, main_frame, camera_instance):
     # Dictionary that contains what setting was changed and what value is new
     settings_to_update = {}
+
+    # List elements to pack on window
+    content_to_pack = []
 
     # Hiding widgets
     main_frame.pack_forget()
@@ -55,31 +70,19 @@ def filters_setting(root, main_frame, camera_instance):
     title = tk.Label(setting_frame, text='Filters Setting')
 
     # Blur Settings
-    blur_slider_text = tk.Label(setting_frame, text=" blur strength: 10")
-    blur_slider = tk.Scale(setting_frame,
-                      from_=1, to=20, orient="horizontal",
-                      command=lambda value: update_value(value, blur_slider_text, 'blur_ksize', settings_to_update)
-                      )
-    # Setting value of slider by using function that check settings.json file
-    blur_slider.set(camera_instance.check_settings('blur_ksize')[0][0])
+    content_to_pack.extend(
+        slider_constructor(setting_frame, camera_instance, 'blur_ksize', settings_to_update, 'blur strength'))
 
     # Bilateral Settings
-    bilateral_slider_text = tk.Label(setting_frame, text=" bilateral strength: 10")
-    bilateral_slider = tk.Scale(setting_frame,
-                      from_=1, to=20, orient="horizontal",
-                      command=lambda value: update_value(value, bilateral_slider_text, 'bilateral_filter', settings_to_update)
-                      )
-    # Setting value of slider by using function that check settings.json file
-    bilateral_slider.set(camera_instance.check_settings('bilateral_filter')[0][0])
+    content_to_pack.extend(
+        slider_constructor(setting_frame, camera_instance, 'bilateral_filter', settings_to_update, 'bilateral strength'))
 
     if not camera_instance.settings_displayed:
         title.pack()
 
-        blur_slider.pack()
-        blur_slider_text.pack()
-
-        bilateral_slider.pack()
-        bilateral_slider_text.pack()
+        # Displaying generated objects
+        for obj in content_to_pack:
+            obj.pack()
 
         setting_frame.pack()
 
