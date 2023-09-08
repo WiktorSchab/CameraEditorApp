@@ -83,7 +83,7 @@ main_frame.rowconfigure(1, weight=1)
 main_frame.rowconfigure(2, weight=1)
 
 # Left side
-filter_list = ['Default', 'Gray', 'Laplacian', 'Blur', 'Bilateral']
+filter_list = ['Default', 'Gray', 'Laplacian', 'Blur', 'Bilateral', 'Brighness']
 
 my_listbox = tk.Listbox(main_frame)
 my_listbox.grid(row=0, column=0)
@@ -113,10 +113,7 @@ main_camera_tab.add(modified_camera, text='Modified camera')
 main_camera_tab.add(original_camera, text='Original camera')
 main_camera_tab.bind('<<NotebookTabChanged>>', current_camera)
 
-
 main_frame.pack(fill='both', expand=True)
-
-
 
 # Starting camera thread
 root.after(1, start_camera_thread)

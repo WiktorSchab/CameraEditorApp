@@ -70,5 +70,12 @@ class CameraClass:
     @staticmethod
     def bilateral(frame):
         setting = CameraClass.check_settings('bilateral_filter')[0]
-        Bilateral = cv.bilateralFilter(frame, setting[0], setting[1], setting[2])
-        return np.uint8(Bilateral)
+        bilateral_frame = cv.bilateralFilter(frame, setting[0], setting[1], setting[2])
+        return np.uint8(bilateral_frame)
+
+    @staticmethod
+    def brighness(frame):
+        setting = CameraClass.check_settings('brighness')[0]
+        brighness_frame = cv.convertScaleAbs(frame, alpha=setting[0], beta=0)
+        return np.uint8(brighness_frame)
+

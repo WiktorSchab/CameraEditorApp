@@ -26,7 +26,8 @@ def camera_update(camera, label_list, camera_instance):
                 1: 'gray',
                 2: 'laplacian',
                 3: 'blur',
-                4: 'bilateral'
+                4: 'bilateral',
+                5: 'brighness'
             }
 
             # Calling function to set filter by looking by active_filter number saved in instance
