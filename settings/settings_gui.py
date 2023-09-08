@@ -19,6 +19,7 @@ def update_value(*args):
 
 def exit_settings_funct(setting_frame, camera_instance, main_frame, settings_to_update):
     while 1:
+        print(settings_to_update)
         if settings_to_update:
             res = tk.messagebox.askquestion(title='Saving settings', message='Do you wanna to apply these settings?')
             if res == 'yes':
@@ -40,13 +41,15 @@ def exit_settings_funct(setting_frame, camera_instance, main_frame, settings_to_
 
 # Function to create slider with label with tex
 def slider_constructor(frame, instance, setting_to_change, setting_dict, text):
-    blur_slider_text = tk.Label(frame, text=f" {text}: 10")
+    slider_value = instance.check_settings(setting_to_change)[0][0]
+
+    blur_slider_text = tk.Label(frame, text=f" {text}: {slider_value}")
     blur_slider = tk.Scale(frame,
                            from_=1, to=20, orient="horizontal",
                            command=lambda value: update_value(value, blur_slider_text, setting_to_change, setting_dict)
                            )
     # Setting value of slider by using function that check settings.json file
-    blur_slider.set(instance.check_settings(setting_to_change)[0][0])
+    blur_slider.set(slider_value)
     return blur_slider, blur_slider_text
 
 
