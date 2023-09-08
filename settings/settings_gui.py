@@ -46,12 +46,18 @@ def slider_constructor(surrounding, setting_to_change, text, range_v):
     instance = surrounding[1]
     setting_dict = surrounding[2]
 
+    if len(range_v) == 3:
+        value_jump = range_v[-1]
+    else:
+        value_jump = 1
+
     slider_value = instance.check_settings(setting_to_change)[0][0]
 
     blur_slider_text = tk.Label(frame_tk, text=f" {text}: {slider_value}")
     blur_slider = tk.Scale(frame_tk,
                            from_=range_v[0], to=range_v[1], orient="horizontal",
-                           command=lambda value: update_value(value, blur_slider_text, setting_to_change, setting_dict)
+                           command=lambda value: update_value(value, blur_slider_text, setting_to_change, setting_dict),
+                           resolution=value_jump
                            )
     # Setting value of slider by using function that check settings.json file
     blur_slider.set(slider_value)
@@ -67,8 +73,6 @@ def filters_setting(root, main_frame, camera_instance):
 
     # Hiding widgets
     main_frame.pack_forget()
-
-
 
     # Creating frame and exit button
     setting_frame = tk.Frame(root)
@@ -89,6 +93,10 @@ def filters_setting(root, main_frame, camera_instance):
     # Bilateral Settings
     content_to_pack.extend(
         slider_constructor(surroundings_for_slider, 'bilateral_filter', 'bilateral strength', [1, 20]))
+
+    # Brighness Settings
+    content_to_pack.extend(
+        slider_constructor(surroundings_for_slider, 'brighness', 'brighness strength', [-100, 100, 5]))
 
     if not camera_instance.settings_displayed:
         title.pack()
