@@ -1,5 +1,5 @@
 import tkinter as tk
-
+from tkinter import messagebox
 
 def update_value(*args):
     value = args[0]
@@ -18,14 +18,24 @@ def update_value(*args):
 
 
 def exit_settings_funct(setting_frame, camera_instance, main_frame, settings_to_update):
-    setting_frame.pack_forget()
+    while 1:
+        if settings_to_update:
+            res = tk.messagebox.askquestion(title='Saving settings', message='Do you wanna to apply these settings?')
+            if res == 'yes':
+                # Sending data to update settings file
+                camera_instance.update_settings(settings_to_update)
 
-    # Changing attribute to 0, so settings will be displayed on next
-    camera_instance.settings_displayed = 0
-    main_frame.pack(fill='both', expand=True)
+            # In the next loop iteration part code in else will be executed
+            settings_to_update = {}
 
-    # Sending data to update settings file
-    camera_instance.update_settings(settings_to_update)
+        else:
+            # Hiding settings and showing main window
+            setting_frame.pack_forget()
+
+            # Changing attribute to 0, so settings will be displayed on next
+            camera_instance.settings_displayed = 0
+            main_frame.pack(fill='both', expand=True)
+            return
 
 
 def filters_setting(root, main_frame, camera_instance):
