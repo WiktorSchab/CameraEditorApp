@@ -23,23 +23,20 @@ def camera_update(camera, label_list, camera_instance):
 
             # List of filter function in instance with active filter number
             list_filters = {
+                0: 'default',
                 1: 'gray',
                 2: 'laplacian',
                 3: 'blur',
-                4: 'bilateral',
-                5: 'brighness'
             }
 
             # Calling function to set filter by looking by active_filter number saved in instance
-            if camera_instance.active_filter:
-                filter_method_name = list_filters[camera_instance.active_filter]
-                if hasattr(camera_instance, filter_method_name):
-                    filter_method = getattr(camera_instance, filter_method_name)
+            filter_method_name = list_filters[camera_instance.active_filter]
+            if hasattr(camera_instance, filter_method_name):
+                filter_method = getattr(camera_instance, filter_method_name)
 
-                    # Filtered frame
-                    filter_frame = filter_method(frame)
-            else:
-                filter_frame = frame
+                # Filtered frame
+                filter_frame = filter_method(frame)
+
 
             # If active Tab is Tab nr 0
             if camera_instance.active_window_number == 0:

@@ -83,7 +83,7 @@ main_frame.rowconfigure(1, weight=1)
 main_frame.rowconfigure(2, weight=1)
 
 # Left side
-filter_list = ['Default', 'Gray', 'Laplacian', 'Blur', 'Bilateral', 'Brighness']
+filter_list = ['Default', 'Gray', 'Laplacian', 'Blur']
 
 my_listbox = tk.Listbox(main_frame)
 my_listbox.grid(row=0, column=0)
