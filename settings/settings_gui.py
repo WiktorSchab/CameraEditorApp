@@ -39,7 +39,7 @@ def exit_settings_funct(setting_frame, camera_instance, main_frame, settings_to_
             return
 
 
-# Function to create slider with label with tex
+# Function to create slider with label with text
 def slider_constructor(surrounding, setting_to_change, text, range_v):
     # Unpacking list with variables with info about surrounding of slider
     frame_tk = surrounding[0]

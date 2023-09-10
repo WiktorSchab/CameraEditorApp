@@ -37,7 +37,6 @@ def camera_update(camera, label_list, camera_instance):
                 # Filtered frame
                 filter_frame = filter_method(frame)
 
-
             # If active Tab is Tab nr 0
             if camera_instance.active_window_number == 0:
                 # frame is image that is displaying in tkinter

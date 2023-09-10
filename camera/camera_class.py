@@ -1,4 +1,5 @@
 import json
+import re
 import numpy as np
 import cv2 as cv
 
@@ -51,9 +52,14 @@ class CameraClass:
 
         # Saving new data
         with open('settings/settings.json', 'w') as file:
-            json.dump(data, file)
+            data = json.dumps(data, sort_keys=True)
 
-    # Filter functions
+            # Formatting text to have key and value in same lane
+            data = re.sub(r',\s*"', ',\n"', data)
+            data = '{\n' + data[1:-1] + '\n}'
+            file.write(data)
+
+            # Filter functions
     @staticmethod
     def default(frame):
         frame = CameraClass.result_filters(frame)
