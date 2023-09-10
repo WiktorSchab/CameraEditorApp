@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
+
 def update_value(*args):
     value = args[0]
     obj = args[1]
@@ -63,6 +64,21 @@ def slider_constructor(surrounding, setting_to_change, text, range_v):
     blur_slider.set(slider_value)
     return blur_slider, blur_slider_text
 
+# Function to save settings about virtual glasses
+def bool_value_button(*args):
+    obj = args[0]
+    state = obj.cget('text')
+    setting_name = args[1]
+    settings_to_update = args[2]
+
+    if state == 'OFF':
+        obj.config(text='ON')
+        settings_to_update[setting_name] = 1
+    else:
+        obj.config(text='OFF')
+        settings_to_update[setting_name] = 0
+    return
+
 
 def filters_setting(root, main_frame, camera_instance):
     # Dictionary that contains what setting was changed and what value is new
@@ -97,6 +113,13 @@ def filters_setting(root, main_frame, camera_instance):
     # Brighness Settings
     content_to_pack.extend(
         slider_constructor(surroundings_for_slider, 'brighness', 'brighness strength', [-100, 100, 5]))
+
+    # Yes/No button glasses
+    glasses_text = tk.Label(setting_frame, text='Virtual glasses:')
+    glasses_switch = tk.Button(setting_frame, text="OFF", command=lambda: bool_value_button(
+        glasses_switch, 'glasses', settings_to_update))
+
+    content_to_pack.extend([glasses_text,glasses_switch])
 
     if not camera_instance.settings_displayed:
         title.pack()

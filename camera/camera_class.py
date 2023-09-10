@@ -1,5 +1,6 @@
 import json
 import re
+
 import numpy as np
 import cv2 as cv
 
@@ -42,12 +43,12 @@ class CameraClass:
             ratio = []
             for i in data[key]:
                 if i:
-                    ratio.append(i/data[key][0])
+                    ratio.append(i / data[key][0])
                 else:
                     ratio.append(1)
 
             # Multiplying ratio elements by value
-            value_array = [int(i*float(value)) for i in ratio]
+            value_array = [int(i * float(value)) for i in ratio]
             data[key] = value_array
 
         # Saving new data
@@ -59,7 +60,7 @@ class CameraClass:
             data = '{\n' + data[1:-1] + '\n}'
             file.write(data)
 
-            # Filter functions
+    # Filter functions
     @staticmethod
     def default(frame):
         frame = CameraClass.result_filters(frame)
@@ -87,10 +88,14 @@ class CameraClass:
         blur = cv.blur(frame, ksize)
         return np.uint8(blur)
 
-
     @staticmethod
     def result_filters(frame):
         """Function to apply light filters (brighness etc.) before using main filter"""
+
+        # Glasses on face
+        glasses_setting = CameraClass.check_settings('glasses')[0][0]
+        if glasses_setting:
+            frame = CameraClass.glasses(frame)
 
         # Brighness
         brighness_setting = CameraClass.check_settings('brighness')[0][0]
@@ -112,9 +117,45 @@ class CameraClass:
 
     @staticmethod
     def brighness(frame):
-        setting = CameraClass.check_settings('brighness')[0][0]
+        setting_br = CameraClass.check_settings('brighness')[0][0]
         # Calculating alpha multiplayer
-        setting = 1 + setting/100
-        brighness_frame = cv.convertScaleAbs(frame, alpha=setting, beta=0)
+        setting_br = 1 + setting_br / 100
+
+        brighness_frame = cv.convertScaleAbs(frame, alpha=setting_br, beta=0)
         return brighness_frame
 
+    @staticmethod
+    def glasses(frame):
+        glasses = cv.imread('glass_test.png', cv.IMREAD_UNCHANGED)
+
+        face_cascade = cv.CascadeClassifier(cv.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        eye_cascade = cv.CascadeClassifier(cv.data.haarcascades + 'haarcascade_eye.xml')
+
+        gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+
+        for (x, y, w, h) in faces:
+            eyes = eye_cascade.detectMultiScale(gray[y:y + h, x:x + w], 1.3, 5)
+
+            if len(eyes) >= 2:
+                # gh - glass height, ey - eyes y
+                gh = h // 2
+
+                ey = y + h // 2 - gh // 2
+                # Placing glasses higher because they are by default placing below eyes
+                ey = ey - gh // 4
+
+                # Resizing glasses
+                glasses_resized = cv.resize(glasses, (w, gh))
+
+                # Extract the alpha channel from the glasses image
+                alpha_channel = glasses_resized[:, :, 3] / 255.0
+
+                # Calculate the complementary alpha channel
+                frame_alpha = 1.0 - alpha_channel
+
+                for c in range(0, 3):
+                    frame[ey:ey + gh, x:x + w, c] = (alpha_channel * glasses_resized[:, :, c] +
+                                                     frame_alpha * frame[ey:ey + gh, x:x + w, c])
+
+        return frame

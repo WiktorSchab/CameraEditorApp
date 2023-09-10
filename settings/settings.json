@@ -1,5 +1,6 @@
 {
-  "blur_ksize": [10,10],
-  "bilateral_filter": [9, 75, 75],
-  "brighness": [1.0]
+"bilateral_filter": [9, 75, 75],
+"blur_ksize": [10, 10],
+"brighness": [1.0],
+"glasses": [1]
 }
